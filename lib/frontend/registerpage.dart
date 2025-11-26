@@ -335,8 +335,6 @@ class _RegisterPageState extends State<RegisterPage> {
           },
         )
         .then((response) {
-          // log(response.body);
-          // log(response.statusCode.toString());
           if (response.statusCode == 200) {
             var jsonResponse = response.body;
             var resarray = jsonDecode(jsonResponse);
@@ -348,12 +346,12 @@ class _RegisterPageState extends State<RegisterPage> {
               );
               if (isLoading) {
                 if (!mounted) return;
-                Navigator.pop(context); // Close the loading dialog
+                Navigator.pop(context);
                 setState(() {
                   isLoading = false;
                 });
               }
-              Navigator.pop(context); // Close the registration dialog
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               Navigator.push(
                 context,
@@ -385,7 +383,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (isLoading) {
       if (!mounted) return;
-      Navigator.pop(context); // Close the loading dialog
+      Navigator.pop(context);
       setState(() {
         isLoading = false;
       });
