@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pawpal/models/user.dart';
 import 'package:pawpal/frontend/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pawpal/frontend/submitpetscreen.dart';
+import 'package:pawpal/frontend/mainpage.dart';
 
 class HomePage extends StatefulWidget {
   final User? user;
@@ -23,15 +25,33 @@ class _HomePageState extends State<HomePage> {
           'PawPal Home',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        actions: [
+       actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.menu, color: Colors.white),
             onSelected: (value) {
-              if (value == 'logout') {
+              if (value == 'pet_listing') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainScreen(user: widget.user),
+                  ),
+                );
+              } else if (value == 'logout') {
                 confirmationLogout();
               }
             },
             itemBuilder: (BuildContext context) => [
+              PopupMenuItem<String>(
+                value: 'pet_listing',
+                child: Row(
+                  children: [
+                    Icon(Icons.pets, color: Colors.blue),
+                    SizedBox(width: 8),
+                    Text('Pet Listing'),
+                  ],
+                ),
+              ),
+              PopupMenuDivider(),
               PopupMenuItem<String>(
                 value: 'logout',
                 child: Row(
@@ -45,6 +65,18 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ],
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FormPetSubmssion(user: widget.user),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
