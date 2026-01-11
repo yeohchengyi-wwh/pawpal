@@ -1,0 +1,65 @@
+[10-Jan-2026 09:38:57 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/dbconnect.php on line 7
+[10-Jan-2026 09:38:59 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/dbconnect.php on line 7
+[10-Jan-2026 09:40:00 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/dbconnect.php on line 7
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: money in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 8
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 13
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 13
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 14
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 14
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 15
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 15
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 16
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 16
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 19
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 19
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 25
+[10-Jan-2026 10:15:02 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 25
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: email in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 5
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: phone in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 6
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: name in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 7
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: money in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 8
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: userid in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 9
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 13
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 13
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 14
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 14
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 15
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 15
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 16
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 16
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 19
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 19
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Undefined index: billplz in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 25
+[10-Jan-2026 10:15:08 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment_update.php on line 25
+[10-Jan-2026 10:34:06 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 38
+[10-Jan-2026 10:34:06 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 39
+[10-Jan-2026 10:35:39 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 38
+[10-Jan-2026 10:35:39 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 39
+[10-Jan-2026 10:35:52 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 38
+[10-Jan-2026 10:35:52 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 39
+[10-Jan-2026 10:37:30 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 38
+[10-Jan-2026 10:37:30 UTC] PHP Notice:  Undefined variable: ip_address in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/payment.php on line 39
+[10-Jan-2026 11:31:14 UTC] Received data - userid: 10, petname: HEMA, images count: 1
+[10-Jan-2026 11:31:14 UTC] Processing 1 images
+[10-Jan-2026 11:31:14 UTC] Saved image 0 as pet_9_1.jpg
+[10-Jan-2026 11:31:14 UTC] Pet submitted successfully, ID: 9
+[10-Jan-2026 11:41:52 UTC] PHP Warning:  file_put_contents(../uploads/pet/pet_9_1.png): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/edit_pet.php on line 52
+[10-Jan-2026 11:43:49 UTC] PHP Warning:  file_put_contents(../uploads/pet/pet_10_1.png): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/submit_pet.php on line 42
+[10-Jan-2026 11:50:23 UTC] PHP Warning:  file_put_contents(../uploads/pet/pet_11_1.jpg): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/submit_pet.php on line 42
+[10-Jan-2026 11:55:49 UTC] Received data - userid: 10, petname: TREX, age: 2, gender: Male, health: Healthy
+[10-Jan-2026 11:55:49 UTC] Processing 1 images
+[10-Jan-2026 11:55:49 UTC] Pet submitted successfully, ID: 12
+[10-Jan-2026 11:55:53 UTC] Received data - userid: 10, petname: TREX, age: 2, gender: Male, health: Healthy
+[10-Jan-2026 11:55:53 UTC] Processing 1 images
+[10-Jan-2026 11:55:53 UTC] Pet submitted successfully, ID: 13
+[10-Jan-2026 11:57:25 UTC] PHP Warning:  file_put_contents(../uploads/pet/pet_13_1.png): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/edit_pet.php on line 52
+[10-Jan-2026 13:23:09 UTC] PHP Warning:  file_put_contents(../uploads/pet_14_1.jpg): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/submit_pet.php on line 42
+[10-Jan-2026 13:27:51 UTC] PHP Warning:  file_put_contents(../uploads/pet_15_1.jpg): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/submit_pet.php on line 42
+[10-Jan-2026 13:37:31 UTC] PHP Notice:  Undefined index: user_id in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 14
+[10-Jan-2026 13:37:31 UTC] PHP Notice:  Undefined index: user_name in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 15
+[10-Jan-2026 13:37:31 UTC] PHP Notice:  Undefined index: user_phone in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 16
+[10-Jan-2026 15:10:53 UTC] PHP Warning:  file_put_contents(../uploads/pet_16_1.jpg): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/submit_pet.php on line 42
+[10-Jan-2026 15:11:51 UTC] PHP Warning:  file_put_contents(../uploads/pet/pet_16_1.png): failed to open stream: No such file or directory in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/edit_pet.php on line 52
+[10-Jan-2026 15:15:48 UTC] PHP Notice:  Undefined index: user_id in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 14
+[10-Jan-2026 15:15:48 UTC] PHP Notice:  Undefined index: user_name in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 15
+[10-Jan-2026 15:15:48 UTC] PHP Notice:  Undefined index: user_phone in /home/youcapfu/public_html/pawpal_yeoh/pawpal/api/update_userprofile.php on line 16

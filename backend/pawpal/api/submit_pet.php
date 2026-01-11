@@ -28,15 +28,6 @@ $base64list = json_decode($_POST['images'], true);
 $savedImages = [];
 $isadopted = 0;
 
-$checkUser = $conn->query("SELECT user_id FROM tbl_users WHERE user_id = '$userid'");
-if ($checkUser->num_rows == 0) {
-    sendJsonResponse([
-        'success' => false,
-        'message' => 'Invalid user'
-    ]);
-    exit();
-}
-
 // Insert new pet into database
 $sqlinsertpet = "INSERT INTO `tbl_pets`(`user_id`, `pet_name`, `pet_type`, `gender`, `age`, `category`, `health`, `description`, `lat`, `lng`, `image_paths`, `is_adopted`) 
 	VALUES ('$userid','$petname','$pettype','$gender','$age','$category','$health','$description','$latitude','$longitude', '', '$isadopted')";
@@ -47,7 +38,7 @@ try {
 		for ($i = 0; $i < count($base64list); $i++) {
 			$base64image = $base64list[$i];
 			$decodedImage = base64_decode($base64image);
-			$filename = "../uploads/pet/pet_" . $last_id . "_" . ($i + 1) . ".png";
+			$filename = "../uploads/pet_" . $last_id . "_" . ($i + 1) . ".jpg";
 			file_put_contents($filename, $decodedImage);
 			$savedImages[] = 'image'.($i+1).': '.$filename;
 		}
