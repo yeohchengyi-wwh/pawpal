@@ -24,10 +24,10 @@ class _AdoptionRequestScreenState extends State<AdoptionRequestScreen> {
   late double width;
   
   TextEditingController reasonController = TextEditingController();
-  TextEditingController contactInfoController = TextEditingController(); // Added Contact Info
+  TextEditingController contactInfoController = TextEditingController(); //Contact Info
   
   String? reasonError;
-  String? contactInfoError; // Added error variable
+  String? contactInfoError; 
   bool isLoading = false;
 
   @override
@@ -127,7 +127,7 @@ class _AdoptionRequestScreenState extends State<AdoptionRequestScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Contact Info Input (New Field)
+                // Contact Info Input
                 TextField(
                   controller: contactInfoController,
                   decoration: InputDecoration(
@@ -295,9 +295,8 @@ class _AdoptionRequestScreenState extends State<AdoptionRequestScreen> {
       body: {
         'petid': petId,
         'userid': userId,
-        'contact_info': contactInfo, // Sending contact info
+        'contact_info': contactInfo,
         'reason_adopt': reason,
-        // Removed status, houseType, owned as they are deleted from DB
       },
     )
         .then((response) {

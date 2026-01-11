@@ -63,7 +63,7 @@ class _DonationPageState extends State<DonationPage> {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
+                        color: Colors.black,
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -443,6 +443,7 @@ class _DonationPageState extends State<DonationPage> {
     }
   }
 
+//show topup
   void showTopUpDialog() {
     double selectedTopUp = 10.00;
 

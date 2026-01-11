@@ -40,7 +40,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
   String? petNameError, ageError, descriptionError, locationError, imageError;
   bool isLoading = false;
 
-  // New Design Colors
+  // Color specific variable
   final Color primaryColor = const Color(0xFFFA6650);
   final Color backgroundColor = const Color(0xFFF9F9F9);
   final Color labelColor = Colors.grey[700]!;
@@ -73,10 +73,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide(
-          color: primaryColor,
-          width: 1.5,
-        ), // Highlight color
+        borderSide: BorderSide(color: primaryColor, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
@@ -98,7 +95,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
       width = width;
     }
     return Scaffold(
-      backgroundColor: backgroundColor, // Soft background color
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Pet Submission Form',
@@ -112,11 +109,11 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
         child: SingleChildScrollView(
           child: Container(
             width: width,
-            padding: EdgeInsets.all(15), // Increased padding slightly
+            padding: EdgeInsets.all(15),
             margin: EdgeInsets.all(10),
             child: Column(
               children: [
-                // logo (Added rounded corners and shadow for better look)
+                // logo
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -248,6 +245,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
                       ),
                     ),
                     const SizedBox(width: 10),
+
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         initialValue: selectedHealth,
@@ -278,13 +276,12 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
                 SizedBox(height: 15),
                 // description
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start, // Align label to top for multiline
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 15,
-                      ), // Center label vertically roughly
+                      ), 
                       child: Text('Description', style: _labelStyle),
                     ),
                     SizedBox(width: 5),
@@ -316,14 +313,13 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
                         maxLines: 3,
                         controller: locationController,
                         keyboardType:
-                            TextInputType.multiline, // Changed for address
+                            TextInputType.multiline, 
                         decoration: _inputDecoration(
                           'Location',
                           prefixIcon: Icons.location_on,
                           errorText: locationError,
                           suffixIcon: IconButton(
                             onPressed: () async {
-                              // ... (keep your existing logic) ...
                               position = await _determinePosition();
                               lat = position.latitude;
                               lng = position.longitude;
@@ -381,10 +377,10 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
                 SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
-                  height: 50, // Taller button
+                  height: 50, 
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor, // Use theme color
+                      backgroundColor: primaryColor, 
                       foregroundColor: Colors.white,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -412,13 +408,12 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
     );
   }
 
-  // Helper widget for Image Boxes to reduce code duplication and apply new style
+  // Helper widget for Image Boxes 
   Widget _buildImageUploadBox(int index) {
     bool hasImage =
         (images[index] != null && !kIsWeb) || (webImages[index] != null);
     return GestureDetector(
       onTap: () {
-        // ... (keep your existing tap logic) ...
         setState(() {
           imageError = null;
         });
@@ -452,7 +447,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
       child: Container(
         height: 95,
         decoration: BoxDecoration(
-          color: Colors.white, // White background for boxes
+          color: Colors.white,
           border: Border.all(
             color:
                 imageError != null &&
@@ -462,7 +457,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
                 : (hasImage
                       ? primaryColor
                       : Colors
-                            .grey[300]!), // Highlight if has image, else soft grey
+                            .grey[300]!), // Highlight if has image else soft grey
             width: hasImage ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(20),
@@ -478,7 +473,7 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
         child: !hasImage
             ? Center(
                 child: Icon(
-                  Icons.add_a_photo, // Changed icon
+                  Icons.add_a_photo, 
                   size: 30,
                   color: Colors.grey[400],
                 ),
@@ -488,9 +483,6 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
     );
   }
 
-  // ... (Keep all your existing logic functions: _determinePosition, pickimagedialog, openCamera, openGallery, cropImage, submitValidation) ...
-
-  // ... (Keep submitPet logic, but update the progress indicator color) ...
   void submitPet(
     String petName,
     String petType,
@@ -523,7 +515,6 @@ class _SubmitPetScreenState extends State<SubmitPetScreen> {
       },
       barrierDismissible: false,
     );
-    // ... (rest of the submitPet function) ...
     http
         .post(
           Uri.parse('${Connection.baseUrl}/pawpal/api/submit_pet.php'),

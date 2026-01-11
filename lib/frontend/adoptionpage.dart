@@ -109,7 +109,7 @@ class _AdoptionPageState extends State<AdoptionPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        // Pet ID (No Name available in model)
+                                        // Pet ID
                                         Text(
                                           "Pet ID: ${adoption.petId}",
                                           style: const TextStyle(
@@ -120,8 +120,8 @@ class _AdoptionPageState extends State<AdoptionPage> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 4),
-
-                                        // User ID (No User Name available in model)
+                                        
+                                        // User ID
                                         Text(
                                           adoption.userId == widget.user!.userId
                                               ? 'My Request'
@@ -148,7 +148,6 @@ class _AdoptionPageState extends State<AdoptionPage> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         
-                                        // Status badge removed as 'status' is not in model
                                       ],
                                     ),
                                   ),

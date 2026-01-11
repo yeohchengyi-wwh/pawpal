@@ -92,7 +92,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 children: [
                   const SizedBox(height: 20),
 
-                  // 1. HEADER SECTION (Avatar + Email)
+                  // 1. HEADER SECTION (User Image + Email)
                   _buildProfileHeader(),
 
                   const SizedBox(height: 25),
@@ -224,7 +224,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   border: Border.all(color: Colors.white, width: 4),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black,
                       blurRadius: 15,
                       offset: Offset(0, 5),
                     ),
@@ -281,7 +281,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black,
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -368,7 +368,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black,
             blurRadius: 10,
             offset: Offset(0, 4),
           ),
@@ -673,9 +673,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     }
 
     setState(() => isLoading = true);
-
-    // Simulate slight delay for better UX feel if network is instant
-    // await Future.delayed(Duration(milliseconds: 500));
 
     await http
         .post(

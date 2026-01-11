@@ -82,10 +82,10 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
                                       child: Container(
-                                        width: width * 0.22, // more responsive
+                                        width: width * 0.22,
                                         height:
                                             width *
-                                            0.2, // balanced aspect ratio
+                                            0.2, 
                                         color: Colors.grey[200],
                                         child: Image.network(
                                           '${Connection.baseUrl}/pawpal/api/uploads/pet_${listDonations[index].petId}_1.jpg',

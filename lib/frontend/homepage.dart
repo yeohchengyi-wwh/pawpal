@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -385,8 +385,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-  // --- KEEPING EXISTING LOGIC BELOW ---
   // load all pets
   void loadPets(String searchQuery, String filterQuery) {
     setState(() {
@@ -552,7 +550,7 @@ class _HomePageState extends State<HomePage> {
                           subtitle: Text("Posted on $formattedDate"),
                         ),
                         
-                        SizedBox(height: 100), // 底部留白给按钮
+                        SizedBox(height: 100),
                       ],
                     ),
                   ),
@@ -599,14 +597,14 @@ class _HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: Colors.blue[50], // 淡蓝色背景
+                                    color: Colors.blue[50],
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.edit, color: Colors.blue, size: 28),
                                 ),
                               ),
                               
-                              SizedBox(width: 40), // 两个图标之间的间距
+                              SizedBox(width: 40), 
                               
                               // Delete Icon Button
                               InkWell(
@@ -614,7 +612,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: Colors.red[50], // 淡红色背景
+                                    color: Colors.red[50],
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.delete, color: Colors.red, size: 28),
@@ -651,7 +649,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ... keep existing UI Helper methods like showDeleteDialog, deletePet, etc. ...
    void showDeleteDialog(int index) {
     showDialog(
       context: context,

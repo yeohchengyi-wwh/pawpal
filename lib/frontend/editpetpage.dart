@@ -378,7 +378,7 @@ class _UpdatePetScreenState extends State<UpdatePetScreen> {
     bool hasImage = (images[index] != null && !kIsWeb) || (webImages[index] != null);
     
     // Note: Since we don't load existing images from server into the 'images' list in _loadPet,
-    // this will be empty initially. This is consistent with your logic where user only sees image if they pick a NEW one.
+    // this will be empty initially. This is consistent with logic where user only sees image if they pick a NEW one.
     
     return GestureDetector(
       onTap: () {
@@ -414,7 +414,7 @@ class _UpdatePetScreenState extends State<UpdatePetScreen> {
     );
   }
 
-  // --- LOGIC FUNCTIONS (Kept largely the same) ---
+  // --- LOGIC FUNCTIONS  ---
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
