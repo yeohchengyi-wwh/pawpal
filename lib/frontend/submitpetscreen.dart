@@ -1,114 +1,172 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:pawpal/models/user.dart';
-import 'package:http/http.dart' as http;
-import 'package:pawpal/connection.dart';
-import 'package:pawpal/frontend/homepage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:pawpal/models/user.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:pawpal/connection.dart';
+import 'package:http/http.dart' as http;
+import 'package:pawpal/frontend/homepage.dart';
 
-class FormPetSubmssion extends StatefulWidget {
+class SubmitPetScreen extends StatefulWidget {
   final User? user;
-  const FormPetSubmssion({super.key, required this.user});
+  const SubmitPetScreen({super.key, required this.user});
 
   @override
-  State<FormPetSubmssion> createState() => _FormPetSubmssionState();
+  State<SubmitPetScreen> createState() => _SubmitPetScreenState();
 }
 
-class _FormPetSubmssionState extends State<FormPetSubmssion> {
-  List<String> petTypes = ["Cat", "Dog", "Rabbit", "Other"];
-
-  List<String> categories = ["Adoption", "Donation Request", "Help/Rescue"];
-
+class _SubmitPetScreenState extends State<SubmitPetScreen> {
   late double width;
   TextEditingController petNameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
-  String selectedPetTypes = "Cat";
-  String selectedCategories = "Adoption";
+  List<String> petTypes = ["Cat", "Dog", "Rabbit", "Other"];
+  List<String> gender = ["Male", "Female", "Both"];
+  List<String> categories = ["Adoption", "Donation Request", "Help/Rescue"];
+  List<String> health = ["Healthy", "Critical", "Unknown"];
+  String selectedPetType = "Other",
+      selectedGender = "Male",
+      selectedCategory = "Adoption",
+      selectedHealth = "Healthy";
   late Position position;
-  late double latitude, longitude;
+  double? lat, lng;
   List<Uint8List?> webImages = [null, null, null];
   List<File?> images = [null, null, null];
-  String? petNameError, descriptionError, locationError, imageError;
+  String? petNameError, ageError, descriptionError, locationError, imageError;
   bool isLoading = false;
+
+  // New Design Colors
+  final Color primaryColor = const Color(0xFFFA6650);
+  final Color backgroundColor = const Color(0xFFF9F9F9);
+  final Color labelColor = Colors.grey[700]!;
+
+  // Helper for label styles
+  TextStyle get _labelStyle =>
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: labelColor);
+
+  // Helper for Input Decorations to keep consistent style
+  InputDecoration _inputDecoration(
+    String label, {
+    IconData? prefixIcon,
+    Widget? suffixIcon,
+    String? errorText,
+  }) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
+      errorText: errorText,
+      prefixIcon: prefixIcon != null
+          ? Icon(prefixIcon, color: Colors.grey[400])
+          : null,
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.grey[300]!), // Softer border
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(
+          color: primaryColor,
+          width: 1.5,
+        ), // Highlight color
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.red, width: 1.5),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
-    if (width > 400) {
-      width = 400;
+    if (width > 600) {
+      width = 600;
     } else {
       width = width;
     }
     return Scaffold(
-      appBar: AppBar(title: Text('Pet Submission Form')),
+      backgroundColor: backgroundColor, // Soft background color
+      appBar: AppBar(
+        title: Text(
+          'Pet Submission Form',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             width: width,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(15), // Increased padding slightly
             margin: EdgeInsets.all(10),
             child: Column(
               children: [
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    'assets/images/petForm.jpeg',
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 180,
-                      color: Colors.blue[100],
-                      child: const Center(child: Icon(Icons.pets, size: 60, color: Colors.white)),
-                    ),
+                // logo (Added rounded corners and shadow for better look)
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset('assets/images/petForm.jpeg', scale: 3),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 30),
 
+                // pet name
                 Row(
                   children: [
-                    Text('Pet Name', style: TextStyle(fontSize: 16)),
+                    Text('Pet Name', style: _labelStyle),
                     SizedBox(width: 15),
                     Expanded(
+                      flex: 2,
                       child: TextField(
                         controller: petNameController,
-                        decoration: InputDecoration(
+                        decoration: _inputDecoration(
+                          'Pet Name',
+                          prefixIcon: Icons.edit,
                           errorText: petNameError,
-                          prefixIcon: Icon(Icons.edit),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 15),
 
                 Row(
                   children: [
-                    Text('Pet Type', style: TextStyle(fontSize: 16)),
-                    SizedBox(width: 24),
+                    // pet type
                     Expanded(
+                      flex: 1,
                       child: DropdownButtonFormField<String>(
-                        initialValue: selectedPetTypes,
-                        decoration: InputDecoration(
-                          labelText: 'Select Pet Type',
-                          prefixIcon: Icon(Icons.category),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                        initialValue: selectedPetType,
+                        decoration: _inputDecoration('Pet Type'),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[400],
                         ),
-                        icon: Icon(Icons.keyboard_arrow_down),
                         items: petTypes.map((String selectedPetType) {
                           return DropdownMenuItem<String>(
                             value: selectedPetType,
@@ -117,88 +175,158 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedPetTypes = newValue!;
+                            selectedPetType = newValue!;
                           });
                         },
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 10),
-
-                Row(
-                  children: [
-                    Text('Category', style: TextStyle(fontSize: 16)),
-                    SizedBox(width: 22),
+                    const SizedBox(width: 10),
+                    // gender
                     Expanded(
+                      flex: 1,
                       child: DropdownButtonFormField<String>(
-                        initialValue: selectedCategories,
-                        decoration: InputDecoration(
-                          labelText: 'Select Category',
-                          prefixIcon: Icon(Icons.label),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                        isExpanded: true,
+                        initialValue: selectedGender,
+                        decoration: _inputDecoration('Gender'),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[400],
                         ),
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        items: categories.map((String selectedCategory) {
+                        items: gender.map((String selectedGender) {
                           return DropdownMenuItem<String>(
-                            value: selectedCategory,
-                            child: Text(selectedCategory),
+                            value: selectedGender,
+                            child: Text(selectedGender),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedCategories = newValue!;
+                            selectedGender = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // age
+                    Expanded(
+                      child: TextField(
+                        controller: ageController,
+                        decoration: _inputDecoration(
+                          'Age',
+                          errorText: ageError,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15),
+                // category
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        initialValue: selectedCategory,
+                        decoration: _inputDecoration('Category'),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[400],
+                        ),
+                        items: categories.map((String selectedCategory) {
+                          return DropdownMenuItem<String>(
+                            value: selectedCategory,
+                            child: Text(
+                              selectedCategory,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedCategory = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        initialValue: selectedHealth,
+                        decoration: _inputDecoration('Health'),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[400],
+                        ),
+                        items: health.map((String selectedHealth) {
+                          return DropdownMenuItem<String>(
+                            value: selectedHealth,
+                            child: Text(
+                              selectedHealth,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedHealth = newValue!;
                           });
                         },
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-
+                SizedBox(height: 15),
+                // description
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start, // Align label to top for multiline
                   children: [
-                    Text('Description', style: TextStyle(fontSize: 16)),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 15,
+                      ), // Center label vertically roughly
+                      child: Text('Description', style: _labelStyle),
+                    ),
                     SizedBox(width: 5),
                     Expanded(
                       child: TextField(
                         maxLines: 3,
                         controller: descriptionController,
-                        decoration: InputDecoration(
+                        decoration: _inputDecoration(
+                          'Description',
+                          prefixIcon: Icons.description,
                           errorText: descriptionError,
-                          prefixIcon: Icon(Icons.description),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-
+                SizedBox(height: 15),
+                // location
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Location', style: TextStyle(fontSize: 16)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text('Location', style: _labelStyle),
+                    ),
                     SizedBox(width: 26),
                     Expanded(
                       child: TextField(
                         maxLines: 3,
                         controller: locationController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        keyboardType:
+                            TextInputType.multiline, // Changed for address
+                        decoration: _inputDecoration(
+                          'Location',
+                          prefixIcon: Icons.location_on,
                           errorText: locationError,
-                          prefixIcon: Icon(Icons.location_on),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
                           suffixIcon: IconButton(
                             onPressed: () async {
+                              // ... (keep your existing logic) ...
                               position = await _determinePosition();
-                              latitude = position.latitude;
-                              longitude = position.longitude;
+                              lat = position.latitude;
+                              lng = position.longitude;
                               List<Placemark> placemarks =
                                   await placemarkFromCoordinates(
                                     position.latitude,
@@ -209,172 +337,35 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
                                   "${place.name},\n${place.postalCode},${place.locality},\n${place.administrativeArea},${place.country}";
                               setState(() {});
                             },
-                            icon: Icon(Icons.location_searching),
+                            icon: Icon(
+                              Icons.location_searching,
+                              color: primaryColor,
+                            ), // Colored icon
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-
+                SizedBox(height: 15),
+                // image upload maximum up to 3
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Image\n(Max 3)', style: TextStyle(fontSize: 16)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text('Image\n(Max 3)', style: _labelStyle),
+                    ),
                     SizedBox(width: 33),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            imageError = null;
-                          });
-                          // index for image, easy for pick and crop image based on index
-                          if (kIsWeb) {
-                            openGallery(0);
-                          } else {
-                            pickimagedialog(0);
-                          }
-                        },
-                        child: Container(
-                          height: 95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: imageError == null
-                                  ? Colors.grey
-                                  : Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            image: (images[0] != null && !kIsWeb)
-                                ? DecorationImage(
-                                    image: FileImage(images[0]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : (webImages[0] != null)
-                                ? DecorationImage(
-                                    image: MemoryImage(webImages[0]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null,
-                          ),
-                          child: (images[0] == null && webImages[0] == null)
-                              ? Center(
-                                  child: Icon(
-                                    Icons.photo_library,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              : null,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            imageError = null;
-                          });
-                          if (images[0] != null || webImages[0] != null) {
-                            if (kIsWeb) {
-                              openGallery(1);
-                            } else {
-                              pickimagedialog(1);
-                            }
-                          } else {
-                            imageError = 'Please click on the first one';
-                            setState(() {});
-                          }
-                        },
-                        child: Container(
-                          height: 95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: imageError == null
-                                  ? Colors.grey
-                                  : Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            image: (images[1] != null && !kIsWeb)
-                                ? DecorationImage(
-                                    image: FileImage(images[1]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : (webImages[1] != null)
-                                ? DecorationImage(
-                                    image: MemoryImage(webImages[1]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null, // return icon if no image
-                          ),
-                          child: (images[1] == null && webImages[1] == null)
-                              ? Center(
-                                  child: Icon(
-                                    Icons.photo_library,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              : null,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            imageError = null;
-                          });
-                          bool hasImage1 =
-                              images[0] != null || webImages[0] != null;
-                          bool hasImage2 =
-                              images[1] != null || webImages[1] != null;
-                          if (!hasImage1) {
-                            imageError = 'Please click on the first one';
-                            setState(() {});
-                          } else if (!hasImage2) {
-                            imageError = 'Please click on the second one';
-                            setState(() {});
-                          } else {
-                            if (kIsWeb) {
-                              openGallery(2);
-                            } else {
-                              pickimagedialog(2);
-                            }
-                          }
-                        },
-                        child: Container(
-                          height: 95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: imageError == null
-                                  ? Colors.grey
-                                  : Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            image: (images[2] != null && !kIsWeb)
-                                ? DecorationImage(
-                                    image: FileImage(images[2]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : (webImages[2] != null)
-                                ? DecorationImage(
-                                    image: MemoryImage(webImages[2]!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null,
-                          ),
-                          child: (images[2] == null && webImages[2] == null)
-                              ? Center(
-                                  child: Icon(
-                                    Icons.photo_library,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              : null,
-                        ),
+                      child: Row(
+                        children: [
+                          Expanded(child: _buildImageUploadBox(0)),
+                          SizedBox(width: 10),
+                          Expanded(child: _buildImageUploadBox(1)),
+                          SizedBox(width: 10),
+                          Expanded(child: _buildImageUploadBox(2)),
+                        ],
                       ),
                     ),
                   ],
@@ -387,22 +378,212 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
                       style: TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
+                  height: 50, // Taller button
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor, // Use theme color
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
                     onPressed: () {
                       submitValidation();
                     },
-                    child: Text('Submit'),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  // Helper widget for Image Boxes to reduce code duplication and apply new style
+  Widget _buildImageUploadBox(int index) {
+    bool hasImage =
+        (images[index] != null && !kIsWeb) || (webImages[index] != null);
+    return GestureDetector(
+      onTap: () {
+        // ... (keep your existing tap logic) ...
+        setState(() {
+          imageError = null;
+        });
+        if (index == 0) {
+          if (kIsWeb)
+            openGallery(0);
+          else
+            pickimagedialog(0);
+        } else if (index == 1) {
+          if (images[0] != null || webImages[0] != null) {
+            if (kIsWeb)
+              openGallery(1);
+            else
+              pickimagedialog(1);
+          } else {
+            setState(() => imageError = 'Please click on the first one');
+          }
+        } else if (index == 2) {
+          if (images[1] != null || webImages[1] != null) {
+            if (kIsWeb)
+              openGallery(2);
+            else
+              pickimagedialog(2);
+          } else if (images[0] == null && webImages[0] == null) {
+            setState(() => imageError = 'Please click on the first one');
+          } else {
+            setState(() => imageError = 'Please click on the second one');
+          }
+        }
+      },
+      child: Container(
+        height: 95,
+        decoration: BoxDecoration(
+          color: Colors.white, // White background for boxes
+          border: Border.all(
+            color:
+                imageError != null &&
+                    index == 0 &&
+                    !hasImage // Only show red on first if error exists
+                ? Colors.red
+                : (hasImage
+                      ? primaryColor
+                      : Colors
+                            .grey[300]!), // Highlight if has image, else soft grey
+            width: hasImage ? 2 : 1,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          image: hasImage
+              ? DecorationImage(
+                  image: (!kIsWeb)
+                      ? FileImage(images[index]!) as ImageProvider
+                      : MemoryImage(webImages[index]!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: !hasImage
+            ? Center(
+                child: Icon(
+                  Icons.add_a_photo, // Changed icon
+                  size: 30,
+                  color: Colors.grey[400],
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+  // ... (Keep all your existing logic functions: _determinePosition, pickimagedialog, openCamera, openGallery, cropImage, submitValidation) ...
+
+  // ... (Keep submitPet logic, but update the progress indicator color) ...
+  void submitPet(
+    String petName,
+    String petType,
+    String gender,
+    String age,
+    String category,
+    String health,
+    String description,
+    String lat,
+    String lng,
+    List<String?> base64images,
+  ) {
+    setState(() {
+      isLoading = true;
+    });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(
+                color: primaryColor,
+              ), // Use primary color
+              SizedBox(width: 20),
+              Text('Loading...'),
+            ],
+          ),
+        );
+      },
+      barrierDismissible: false,
+    );
+    // ... (rest of the submitPet function) ...
+    http
+        .post(
+          Uri.parse('${Connection.baseUrl}/pawpal/api/submit_pet.php'),
+          body: {
+            'userid': widget.user?.userId!,
+            'petname': petName,
+            'pettype': petType,
+            'gender': gender,
+            'age': age,
+            'category': category,
+            'health': health,
+            'description': description,
+            'latitude': lat,
+            'longitude': lng,
+            'images': jsonEncode(base64images),
+          },
+        )
+        .then((response) {
+          if (response.statusCode == 200) {
+            var jsonResponse = response.body;
+            var resarray = jsonDecode(jsonResponse);
+            if (resarray['success']) {
+              if (!mounted) return;
+              stopLoading();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(user: widget.user),
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("${resarray['message']}"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              if (!mounted) return;
+              stopLoading();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Submit failed: ${resarray['message']}"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
+        })
+        .timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            if (!mounted) return;
+            stopLoading();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Request timed out. Please try again.'),
+              ),
+            );
+          },
+        );
   }
 
   // auto obtain the current location of the user
@@ -455,7 +636,7 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
+                leading: Icon(Icons.camera_alt, color: primaryColor),
                 title: Text('Camera'),
                 onTap: () {
                   Navigator.pop(context);
@@ -463,7 +644,7 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.image),
+                leading: Icon(Icons.image, color: primaryColor),
                 title: Text('Gallery'),
                 onTap: () {
                   Navigator.pop(context);
@@ -477,6 +658,7 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
     );
   }
 
+  // open the camera to capture image
   Future<void> openCamera(int index) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -492,6 +674,7 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
     }
   }
 
+  // open gallery to select image
   Future<void> openGallery(int index) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -502,50 +685,46 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
         setState(() {});
       } else {
         File imageFile = File(pickedFile.path);
-        cropImage(index, imageFile); //mobile devices only
+        cropImage(index, imageFile); // only for mobile
       }
     }
   }
 
-  Future<void> cropImage(int index, File originalImage) async {
-    if (kIsWeb) return;
+  // crop the image
+  Future<void> cropImage(int index, File image) async {
+    if (kIsWeb) return; // skip cropping on web
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 3),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Please Crop Your Image',
+          toolbarColor: primaryColor, // Changed color
+          toolbarWidgetColor: Colors.white,
+        ),
+        IOSUiSettings(title: 'Cropper'),
+      ],
+    );
 
-    try {
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: originalImage.path,
-        aspectRatio: const CropAspectRatio(ratioX: 5, ratioY: 3),
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Image',
-            toolbarColor: Colors.blue,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.ratio5x3,
-            lockAspectRatio: false,
-          ),
-          IOSUiSettings(title: 'Cropper'),
-        ],
-      );
-
-      if (croppedFile != null) {
-        print("✅ Crop successful: ${croppedFile.path}");
-        setState(() {
-          images[index] = File(croppedFile.path);
-          imageError = null;
-        });
-
-        print("✅ Image updated for index $index");
-      } else {
-        print("⚠️ Crop cancelled by user");
-      }
-    } catch (e) {
-      print("❌ Crop error: $e");
+    if (croppedFile != null) {
+      image = File(croppedFile.path);
+      // save image in list
+      if (index == 0) images[0] = image;
+      if (index == 1) images[1] = image;
+      if (index == 2) images[2] = image;
+      imageError = null;
+      setState(() {});
     }
   }
 
+  // validate all fields for submission
   void submitValidation() {
     String petName = petNameController.text.trim();
-    String petType = selectedPetTypes;
-    String category = selectedCategories;
+    String petType = selectedPetType;
+    String gender = selectedGender;
+    String age = ageController.text.trim();
+    String category = selectedCategory;
+    String health = selectedHealth;
     String description = descriptionController.text.trim();
     String location = locationController.text.trim();
 
@@ -553,17 +732,32 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
 
     setState(() {
       petNameError = null;
+      ageError = null;
       descriptionError = null;
       locationError = null;
       imageError = null;
     });
 
+    if (widget.user == null) {
+      stopLoading();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("User not logged in")));
+      return;
+    }
     if (petName.isEmpty) {
       setState(() {
         petNameError = "Required field";
       });
       return;
     }
+    if (ageController.text.trim().isEmpty) {
+      setState(() {
+        ageError = "Required field";
+      });
+      return;
+    }
+
     if (description.isEmpty) {
       setState(() {
         descriptionError = "Required field";
@@ -579,6 +773,12 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
     if (location.isEmpty) {
       setState(() {
         locationError = "Required field";
+      });
+      return;
+    }
+    if (lat == null || lng == null) {
+      setState(() {
+        locationError = "Please obtain location";
       });
       return;
     }
@@ -598,32 +798,36 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
       }
     }
 
-    //confirmation dialog
+    // show submit confirmation dialog
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: const Text('Are you sure you want to submit this form?'),
+          content: const Text('Are you sure you want to submit?'),
           actions: [
             TextButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 submitPet(
                   petName,
                   petType,
+                  gender,
+                  age,
                   category,
+                  health,
                   description,
-                  latitude.toString(),
-                  longitude.toString(),
+                  lat.toString(),
+                  lng.toString(),
                   base64images,
                 );
               },
-              child: Text('Submit'),
+              child: Text('Submit', style: TextStyle(color: primaryColor)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
             ),
           ],
         );
@@ -631,126 +835,13 @@ class _FormPetSubmssionState extends State<FormPetSubmssion> {
     );
   }
 
-  void submitPet(
-  String petName,
-  String petType,
-  String category,
-  String description,
-  String lat,
-  String lng,
-  List<String?> base64images,
-) {
-  setState(() {
-    isLoading = true;
-  });
-  
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return const AlertDialog(
-        content: Row(
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(width: 20),
-            Text('Submitting...'),
-          ],
-        ),
-      );
-    },
-  );
-
-  // 打印调试信息
-  print('Sending request to: ${Connection.baseUrl}/pawpal/api/submit_pet.php');
-  print('Images count: ${base64images.length}');
-
-  http.post(
-    Uri.parse('${Connection.baseUrl}/pawpal/api/submit_pet.php'),
-    body: {
-      'userid': widget.user?.userId ?? '0',
-      'petname': petName,
-      'pettype': petType,
-      'category': category,
-      'description': description,
-      'latitude': lat,
-      'longitude': lng,
-      'images': jsonEncode(base64images.where((img) => img != null).toList()),
-    },
-  ).then((response) {
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    
-    // 首先关闭loading对话框
-    if (mounted) {
-      Navigator.of(context).pop(); // 关闭loading对话框
+  // close the status of loading on screen
+  void stopLoading() {
+    if (isLoading) {
+      Navigator.of(context).pop(); // Close the loading dialog
+      setState(() {
+        isLoading = false;
+      });
     }
-    
-    if (response.statusCode == 200) {
-      try {
-        var jsonResponse = jsonDecode(response.body);
-        bool success = jsonResponse['success'] ?? false;
-        String message = jsonResponse['message'] ?? 'No message';
-        
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(message),
-              backgroundColor: Colors.green,
-            ),
-          );
-          
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(user: widget.user),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Submit failed: $message"),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } catch (e) {
-        print('JSON decode error: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error parsing server response'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Server error: ${response.statusCode}'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-    
-    setState(() {
-      isLoading = false;
-    });
-  }).catchError((error) {
-    print('Request error: $error');
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Network error: ${error.toString()}'),
-        backgroundColor: Colors.red,
-      ),
-    );
-    
-    setState(() {
-      isLoading = false;
-    });
-  });
-}
-
+  }
 }
